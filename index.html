@@ -9,7 +9,9 @@
 <body>
   <div class="wrap">
     <h1>Trading Journal</h1>
-    <div class="sub">GitHub Pages • Synced on mobile + laptop (Firebase)</div>
+    <div class="sub">&nbsp;&nbsp;PATIENCE&nbsp;&nbsp;
+                    •&nbsp;&nbsp;DISCIPLINE&nbsp;&nbsp;
+                    •&nbsp;&nbsp;CONSISTENCY</div>
 
     <div class="grid">
       <!-- LEFT: FORM -->
@@ -19,7 +21,7 @@
         <form id="tradeForm" class="form">
           <div>
             <label>Total Equity (Before Trade)</label>
-            <input type="number" id="equityBefore" step="0.01" required />
+            <input type="number" id="equityBefore"step="0.01"  required />
           </div>
 
           <div>
@@ -44,6 +46,7 @@
               <option>Calm</option>
               <option>Confident</option>
               <option>Fear</option>
+              <option>Frustrated</option>
               <option>Greedy</option>
               <option>Revenge</option>
               <option>Overconfident</option>
@@ -51,7 +54,7 @@
           </div>
 
           <div>
-            <label>Pair (optional)</label>
+            <label>Currency Pair</label>
             <input type="text" id="pair" placeholder="XAUUSD / EURUSD..." />
           </div>
 
@@ -85,17 +88,17 @@
 
           <div>
             <label>Entry</label>
-            <input type="number" id="entry" step="0.00001" />
+            <input type="text" id="entry" inputmode="decimal" />
           </div>
 
           <div>
             <label>Stop Loss</label>
-            <input type="number" id="sl" step="0.00001" />
+            <input type="text" id="sl" inputmode="decimal" />
           </div>
 
           <div>
             <label>Take Profit</label>
-            <input type="number" id="tp" step="0.00001" />
+            <input type="text" id="tp" inputmode="decimal" />
           </div>
 
           <div>
@@ -299,4 +302,3 @@
 </body>
 
 </html>
-
