@@ -100,19 +100,31 @@ th, td{
 /* Allow horizontal scroll if table becomes wide */
 .tableWrap{
   overflow-x: auto;
+  overflow-y: hidden;
+  margin-top: 10px;
   -webkit-overflow-scrolling: touch;
 }
 
-/* Make table wide enough so columns don't compress */
 table{
-  min-width: 1100px;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;     /* important */
+  min-width: 1400px;      /* important: prevents squeezing */
 }
 
-/* Extra width for price columns (Entry, SL, TP) */
-th:nth-child(6), td:nth-child(6),  /* Entry */
-th:nth-child(7), td:nth-child(7),  /* SL */
-th:nth-child(8), td:nth-child(8) { /* TP */
-  min-width: 90px;
+th, td{
+  border-bottom: 1px solid var(--line);
+  padding: 9px 8px;
+  text-align: left;
+  font-size: 12px;
+  white-space: nowrap;    /* keep full number in one line */
+}
+
+/* Give Entry/SL/TP more width */
+th:nth-child(6), td:nth-child(6),
+th:nth-child(7), td:nth-child(7),
+th:nth-child(8), td:nth-child(8){
+  min-width: 70px;
 }
 
 
@@ -170,5 +182,19 @@ canvas{
     color: var(--muted);
     font-weight: 600;
   }
+    /* Label fixed width */
+  td::before{
+    min-width: 110px;
+    flex: 0 0 110px;
+  }
+
+  /* Value takes remaining space (no half cut) */
+  .cell-value{
+    flex: 1;
+    text-align: right;
+    white-space: nowrap;
+    overflow: visible;
+  }
 
 }
+
