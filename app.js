@@ -335,20 +335,34 @@ async function render() {
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td data-label="Date">${t.date || ""}</td>
-      <td data-label="Pair">${t.pair ? `<span class="pill">${escapeHtml(t.pair)}</span>` : ""}</td>
-      <td data-label="Session">${escapeHtml(t.session || "")}</td>
-      <td data-label="Direction">${escapeHtml(t.direction || "")}</td>
-      <td data-label="Emotion">${escapeHtml(t.emotion || "")}</td>
-      <td data-label="Entry">${formatNum(t.entry)}</td>
-      <td data-label="SL">${formatNum(t.sl)}</td>
-      <td data-label="TP">${formatNum(t.tp)}</td>
-      <td data-label="Lot">${formatNum(t.lot)}</td>
-      <td data-label="P/L" class="${pl >= 0 ? "good" : "bad"}">${(pl >= 0 ? "+" : "") + formatNum(pl)}</td>
-      <td data-label="Equity After">${formatNum(t.equityAfter)}</td>
-      <td data-label="Notes">${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</td>
-      <td data-label="Action"><button class="danger" data-del="${t.id}">Delete</button></td>
-    `;
+        <td data-label="Date"><span class="cell-value">${t.date || ""}</span></td>
+
+        <td data-label="Pair">
+          <span class="cell-value">${t.pair ? `<span class="pill">${escapeHtml(t.pair)}</span>` : ""}</span>
+        </td>
+
+        <td data-label="Session"><span class="cell-value">${escapeHtml(t.session || "")}</span></td>
+        <td data-label="Direction"><span class="cell-value">${escapeHtml(t.direction || "")}</span></td>
+        <td data-label="Emotion"><span class="cell-value">${escapeHtml(t.emotion || "")}</span></td>
+
+        <td data-label="Entry"><span class="cell-value">${formatNum(t.entry)}</span></td>
+        <td data-label="SL"><span class="cell-value">${formatNum(t.sl)}</span></td>
+        <td data-label="TP"><span class="cell-value">${formatNum(t.tp)}</span></td>
+
+        <td data-label="Lot"><span class="cell-value">${formatNum(t.lot)}</span></td>
+
+        <td data-label="P/L" class="${pl >= 0 ? "good" : "bad"}">
+          <span class="cell-value">${(pl >= 0 ? "+" : "") + formatNum(pl)}</span>
+        </td>
+
+        <td data-label="Equity After"><span class="cell-value">${formatNum(t.equityAfter)}</span></td>
+
+        <td data-label="Notes">
+          <span class="cell-value">${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</span>
+        </td>
+
+        <td data-label="Action"><span class="cell-value">—</span></td>
+      `;
     tb.appendChild(tr);
   }
 
@@ -514,4 +528,5 @@ if (hasCloud()) {
   }, 1200);
 
 }
+
 
