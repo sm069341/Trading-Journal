@@ -347,7 +347,7 @@ async function render() {
       <td data-label="P/L" class="${pl >= 0 ? "good" : "bad"}">${(pl >= 0 ? "+" : "") + formatNum(pl)}</td>
       <td data-label="Equity After">${formatNum(t.equityAfter)}</td>
       <td data-label="Notes">${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</td>
-      <td data-label="Action"><button class="danger" data-del="${t.id}" disabled>Delete</button></td>
+      <td data-label="Action"><button class="danger" data-del="${t.id}">Delete</button></td>
     `;
     tb.appendChild(tr);
   }
@@ -514,3 +514,4 @@ if (hasCloud()) {
   }, 1200);
 
 }
+
