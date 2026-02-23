@@ -145,7 +145,17 @@ canvas{
     content: attr(data-label);
     color: var(--muted);
     font-weight: 600;
+
+    /* fixed width for label */
+    min-width: 110px;
+    flex: 0 0 110px;
+  }
+
+  .cell-value {
+    flex: 1;
+    text-align: right;
+    white-space: nowrap;
+    overflow: visible;
   }
 }
-
 
