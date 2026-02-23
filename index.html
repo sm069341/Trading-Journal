@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trading Journal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Trading Journal</h1>
+    <div class="sub">GitHub Pages • Synced on mobile + laptop (Firebase)</div>
+
+    <div class="grid">
+      <!-- LEFT: FORM -->
+      <div class="card">
+        <h2>Add Trade</h2>
+
+        <form id="tradeForm" class="form">
+          <div>
+            <label>Total Equity (Before Trade)</label>
+            <input type="number" id="equityBefore" step="0.01" required />
+          </div>
+
+          <div>
+            <label>Date</label>
+            <input type="date" id="date" required />
+          </div>
+
+          <div>
+            <label>Session</label>
+            <select id="session" required>
+              <option value="">Select</option>
+              <option>Asian</option>
+              <option>London</option>
+              <option>New York</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Emotion</label>
+            <select id="emotion" required>
+              <option value="">Select</option>
+              <option>Calm</option>
+              <option>Confident</option>
+              <option>Fear</option>
+              <option>Greedy</option>
+              <option>Revenge</option>
+              <option>Overconfident</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Pair (optional)</label>
+            <input type="text" id="pair" placeholder="XAUUSD / EURUSD..." />
+          </div>
+
+          <div>
+            <label>Direction</label>
+            <select id="direction" required>
+              <option value="">Select</option>
+              <option>BUY</option>
+              <option>SELL</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Lot Size</label>
+            <input type="number" id="lot" step="0.01" required />
+          </div>
+
+          <div>
+            <label>Result Type</label>
+            <select id="resultType" required>
+              <option value="">Select</option>
+              <option value="PROFIT">Profit</option>
+              <option value="LOSS">Loss</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Amount (Enter positive)</label>
+            <input type="number" id="resultAmount" step="0.01" min="0" required />
+          </div>
+
+          <div>
+            <label>Entry</label>
+            <input type="number" id="entry" step="0.00001" />
+          </div>
+
+          <div>
+            <label>Stop Loss</label>
+            <input type="number" id="sl" step="0.00001" />
+          </div>
+
+          <div>
+            <label>Take Profit</label>
+            <input type="number" id="tp" step="0.00001" />
+          </div>
+
+          <div>
+            <label>Equity After Trade (auto)</label>
+            <input type="number" id="equityAfter" step="0.01" required />
+          </div>
+
+          <div class="span3">
+            <label>Notes (optional)</label>
+            <textarea id="notes" placeholder="Reason, mistake, what you felt..."></textarea>
+          </div>
+
+          <div class="span3 row">
+            <button type="submit">Save Trade</button>
+            <button type="button" id="clearAll" class="danger">Clear All</button>
+          </div>
+
+          <div class="span3 small">
+            Profit % = (Period P/L ÷ Period Starting Equity) × 100
+          </div>
+        </form>
+      </div>
+
+      <!-- RIGHT: ANALYTICS -->
+      <div class="card">
+        <h2>Analytics</h2>
+
+        <div class="kpis">
+          <div class="kpi">
+            <div class="small">Total P/L</div>
+            <div class="v" id="kpiTotal">0</div>
+          </div>
+          <div class="kpi">
+            <div class="small">Win Rate</div>
+            <div class="v" id="kpiWinRate">0%</div>
+          </div>
+          <div class="kpi">
+            <div class="small">Avg Win</div>
+            <div class="v" id="kpiAvgWin">0</div>
+          </div>
+          <div class="kpi">
+            <div class="small">Avg Loss</div>
+            <div class="v" id="kpiAvgLoss">0</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Equity Curve</div>
+          <canvas id="equityChart" width="900" height="240"></canvas>
+          <div class="small">Chart uses Equity After Trade (sorted by date).</div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Monthly Report</div>
+          <div id="monthlyBox" class="box"></div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Weekly Profit %</div>
+          <div id="weeklyBox" class="box"></div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Session-wise Performance</div>
+          <div id="sessionBox" class="box"></div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Emotion-wise Performance</div>
+          <div id="emotionBox" class="box"></div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Pair-wise Performance</div>
+          <div id="pairBox" class="box"></div>
+        </div>
+
+        <div class="section">
+          <div class="small title">Direction-wise Performance</div>
+          <div id="directionBox" class="box"></div>
+        </div>
+
+        <div class="tools">
+          <button type="button" id="exportBtn">Export (JSON)</button>
+          <button type="button" id="importBtn">Import (JSON)</button>
+          <input type="file" id="fileInput" accept="application/json" hidden />
+        </div>
+
+        <div class="small">
+          Export is backup. Import if needed.
+        </div>
+
+        <div class="small" id="syncStatus" style="margin-top:8px;">
+          Sync: initializing...
+        </div>
+      </div>
+    </div>
+
+    <!-- TRADES + FILTERS -->
+    <div class="card" style="margin-top:14px;">
+      <div class="row between">
+        <h2>Trades</h2>
+        <div class="small">Filters apply to table + analytics + chart</div>
+      </div>
+
+      <div class="filters">
+        <div>
+          <label>Filter Pair</label>
+          <select id="filterPair">
+            <option value="">All</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Filter Session</label>
+          <select id="filterSession">
+            <option value="">All</option>
+            <option>Asian</option>
+            <option>London</option>
+            <option>New York</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Filter Direction</label>
+          <select id="filterDirection">
+            <option value="">All</option>
+            <option>BUY</option>
+            <option>SELL</option>
+          </select>
+        </div>
+
+        <div>
+          <label>From</label>
+          <input type="date" id="filterFrom" />
+        </div>
+
+        <div>
+          <label>To</label>
+          <input type="date" id="filterTo" />
+        </div>
+
+        <div class="row" style="align-items:flex-end;">
+          <button type="button" id="resetFilters">Reset</button>
+        </div>
+      </div>
+
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th><th>Pair</th><th>Session</th><th>Direction</th><th>Emotion</th>
+              <th>Entry</th><th>SL</th><th>TP</th>
+              <th>Lot</th><th>P/L</th><th>Equity After</th><th>Notes</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="tradeBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Firebase Cloud Sync ===================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    // ✅ 1) PASTE YOUR FIREBASE CONFIG HERE (from Firebase Console -> Project Settings -> Web app)
+    const firebaseConfig = {
+      apiKey: "PASTE_HERE",
+      authDomain: "PASTE_HERE",
+      projectId: "PASTE_HERE",
+      storageBucket: "PASTE_HERE",
+      messagingSenderId: "PASTE_HERE",
+      appId: "PASTE_HERE"
+    };
+
+    // ✅ 2) SAME JOURNAL ID ON MOBILE + LAPTOP (keep it secret)
+    const JOURNAL_ID = "my-trading-journal-001";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    await signInAnonymously(auth);
+
+    // Expose helpers for app.js
+    window.__CLOUD__ = {
+      ready: true,
+      doc: (name) => doc(db, "journals", JOURNAL_ID + "_" + name),
+      getDoc,
+      setDoc
+    };
+
+    window.dispatchEvent(new Event("cloud-ready"));
+  </script>
+
+  <script src="app.js"></script>
+</body>
+</html>
