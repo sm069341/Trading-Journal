@@ -360,8 +360,6 @@ async function render() {
         <td data-label="Notes">
           <span class="cell-value">${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</span>
         </td>
-
-        <td data-label="Action"><span class="cell-value">—</span></td>
       `;
     tb.appendChild(tr);
   }
@@ -528,5 +526,6 @@ if (hasCloud()) {
   }, 1200);
 
 }
+
 
 
