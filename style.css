@@ -90,42 +90,6 @@ button:hover{ filter:brightness(1.06); }
 table{ width:100%; border-collapse:collapse; }
 th, td{ border-bottom:1px solid var(--line); padding:9px 8px; text-align:left; font-size:12px; }
 th{ color:var(--muted); font-weight:600; }
-/* ===== Fix Entry / SL / TP getting squeezed ===== */
-
-/* Prevent number columns from wrapping */
-th, td{
-  white-space: nowrap;
-}
-
-/* Allow horizontal scroll if table becomes wide */
-.tableWrap{
-  overflow-x: auto;
-  overflow-y: hidden;
-  margin-top: 10px;
-  -webkit-overflow-scrolling: touch;
-}
-
-table{
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;     /* important */
-  min-width: 1400px;      /* important: prevents squeezing */
-}
-
-th, td{
-  border-bottom: 1px solid var(--line);
-  padding: 9px 8px;
-  text-align: left;
-  font-size: 12px;
-  white-space: nowrap;    /* keep full number in one line */
-}
-
-/* Give Entry/SL/TP more width */
-th:nth-child(6), td:nth-child(6),
-th:nth-child(7), td:nth-child(7),
-th:nth-child(8), td:nth-child(8){
-  min-width: 70px;
-}
 
 
 .pill{
@@ -182,19 +146,6 @@ canvas{
     color: var(--muted);
     font-weight: 600;
   }
-    /* Label fixed width */
-  td::before{
-    min-width: 110px;
-    flex: 0 0 110px;
-  }
-
-  /* Value takes remaining space (no half cut) */
-  .cell-value{
-    flex: 1;
-    text-align: right;
-    white-space: nowrap;
-    overflow: visible;
-  }
-
 }
+
 
