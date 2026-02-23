@@ -12,6 +12,15 @@ function formatNum(n) {
   return x.toLocaleString(undefined, { maximumFractionDigits: 2 });
 }
 
+function formatPrice(v){
+  if (v === "" || v === null || v === undefined) return "";
+  // Keep EXACT input (string) if available, so 1.36000 stays 1.36000
+  if (typeof v === "string") return v;
+  // If it's a number (from old data), show 5 decimals
+  if (typeof v === "number") return v.toFixed(5);
+  return String(v);
+}
+
 function avg(arr) {
   return arr.reduce((a, b) => a + b, 0) / arr.length;
 }
@@ -335,32 +344,19 @@ async function render() {
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-        <td data-label="Date"><span class="cell-value">${t.date || ""}</span></td>
-
-        <td data-label="Pair">
-          <span class="cell-value">${t.pair ? `<span class="pill">${escapeHtml(t.pair)}</span>` : ""}</span>
-        </td>
-
-        <td data-label="Session"><span class="cell-value">${escapeHtml(t.session || "")}</span></td>
-        <td data-label="Direction"><span class="cell-value">${escapeHtml(t.direction || "")}</span></td>
-        <td data-label="Emotion"><span class="cell-value">${escapeHtml(t.emotion || "")}</span></td>
-
-        <td data-label="Entry"><span class="cell-value">${formatNum(t.entry)}</span></td>
-        <td data-label="SL"><span class="cell-value">${formatNum(t.sl)}</span></td>
-        <td data-label="TP"><span class="cell-value">${formatNum(t.tp)}</span></td>
-
-        <td data-label="Lot"><span class="cell-value">${formatNum(t.lot)}</span></td>
-
-        <td data-label="P/L" class="${pl >= 0 ? "good" : "bad"}">
-          <span class="cell-value">${(pl >= 0 ? "+" : "") + formatNum(pl)}</span>
-        </td>
-
-        <td data-label="Equity After"><span class="cell-value">${formatNum(t.equityAfter)}</span></td>
-
-        <td data-label="Notes">
-          <span class="cell-value">${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</span>
-        </td>
-      `;
+      <td>${t.date || ""}</td>
+      <td>${t.pair ? `<span class="pill">${escapeHtml(t.pair)}</span>` : ""}</td>
+      <td>${escapeHtml(t.session || "")}</td>
+      <td>${escapeHtml(t.direction || "")}</td>
+      <td>${escapeHtml(t.emotion || "")}</td>
+      <td>${formatPrice(t.entry)}</td>
+      <td>${formatPrice(t.sl)}</td>
+      <td>${formatPrice(t.tp)}</td>
+      <td>${formatNum(t.lot)}</td>
+      <td class="${pl >= 0 ? "good" : "bad"}">${(pl >= 0 ? "+" : "") + formatNum(pl)}</td>
+      <td>${formatNum(t.equityAfter)}</td>
+      <td>${t.notes ? escapeHtml(t.notes).slice(0, 60) + (t.notes.length > 60 ? "…" : "") : ""}</td>
+    `;
     tb.appendChild(tr);
   }
 
@@ -526,6 +522,7 @@ if (hasCloud()) {
   }, 1200);
 
 }
+
 
 
 
